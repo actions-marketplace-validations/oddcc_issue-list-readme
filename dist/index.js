@@ -1868,13 +1868,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tablemark_1 = __importDefault(__webpack_require__(611));
 const core = __importStar(__webpack_require__(470));
 const extractBody_1 = __importDefault(__webpack_require__(312));
+function toHtmlTags(labels) {
+    const nameArr = labels.map(function (label) {
+        return label.name;
+    });
+    return nameArr.join(',');
+}
 const createTableContents = async (issues) => {
-    console.log(JSON.stringify(issues));
+    console.log(`issues: `);
+    console.log(issues);
     try {
         const array = issues.map(async (item) => {
             return {
                 title: `<a href="${item.html_url}">${item.title}</a>`,
-                tags: item.labels,
+                tags: toHtmlTags(item.labels),
                 body: await extractBody_1.default(item.body)
             };
         });
@@ -22372,6 +22379,7 @@ const getContents = async () => {
             labels
         });
         const readme = fs_1.readFileSync('./README.md');
+        console.log(`list.data: `);
         console.log(list.data);
         return {
             issues: list.data,

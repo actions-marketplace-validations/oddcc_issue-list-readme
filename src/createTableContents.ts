@@ -2,13 +2,21 @@ import tablemark from 'tablemark';
 import * as core from '@actions/core';
 import extractBody from './extractBody';
 
+function toHtmlTags(labels: any[]): string {
+  const nameArr = labels.map(function(label) {
+    return label.name;
+  });
+  return nameArr.join(',');
+}
+
 const createTableContents = async (issues: any[]) => {
-  console.log(JSON.stringify(issues));
+  console.log(`issues: `);
+  console.log(issues);
   try {
     const array = issues.map(async (item: any) => {
       return {
         title: `<a href="${item.html_url}">${item.title}</a>`,
-        tags: item.labels,
+        tags: toHtmlTags(item.labels),
         body: await extractBody(item.body)
       };
     });
@@ -28,4 +36,5 @@ const createTableContents = async (issues: any[]) => {
     throw error.message;
   }
 };
+
 export default createTableContents;
