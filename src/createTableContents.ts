@@ -6,11 +6,7 @@ const createTableContents = async (issues: any[]) => {
   try {
     const array = issues.map(async (item: any) => ({
       title: `<a href="${item.html_url}">${item.title}</a>`,
-      status: item.state === 'open' ? ':eight_spoked_asterisk:' : ':no_entry:',
-      assignee: item.assignees.map(
-        (assignee: any) =>
-          `<a href="${assignee.html_url}"><img src="${assignee.avatar_url}" width="20" /></a>`
-      ),
+      tags: item.labels,
       body: await extractBody(item.body)
     }));
 
